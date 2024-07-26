@@ -8,14 +8,14 @@ import { useSearchParams } from 'next/navigation';
 import React from 'react'
 
 
-export default function page() {
+export default function EtagerePage() {
   const searchParams = useSearchParams();
   const shelfId = searchParams.get('id')
   const displayMode = searchParams.get('displayMode') as DisplayMode
 
   
 
-  const { data: bookIds, isLoading: idsLoading, error: idsError } = useGetBooks({ variables: { shelfId: shelfId as string } });
+  const { data: bookIds, isLoading: idsLoading } = useGetBooks({ variables: { shelfId: shelfId as string } });
 
   if (idsLoading) {
     return <div>Loading ...</div>
@@ -43,7 +43,7 @@ function BookList({ bookIds, displayMode = 'grid' }: { bookIds: string[], displa
   );
 
   if (bookIds == undefined) {
-    return <div>Une erreur s'est produite</div>
+    return <div>Une erreur s&lsquo;est produite</div>
   }
   const isLoading = booksDetailsQueries.some(query => query.isLoading);
 

@@ -33,6 +33,11 @@
 	@apply text-lg font-semibold;
 }
 
+.body20-semi {
+	@apply text-xl font-semibold;
+}
+
+
 .body24-regular {
 	@apply text-2xl font-normal;
 }
