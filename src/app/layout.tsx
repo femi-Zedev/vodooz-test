@@ -22,6 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="icon" href="/icon.svg" sizes="any" />
       <body>
         <QueryProvider>
           <main className={`${rubik.className} relative min-h-screen bg-[#F5F6F8] text-black`}>

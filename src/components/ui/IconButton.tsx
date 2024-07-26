@@ -9,7 +9,7 @@ interface IconButtonProps {
 const IconButton = ({ icon, onClick, isActive }: IconButtonProps) => {
   return (
     <button
-      className={`p-2 hover:bg-orange-100/30 rounded-lg ${isActive ? 'text-orange-400' : 'text-gray-400'}`}
+      className={`px-2.5 py-2 hover:bg-orange-100/30 rounded-lg ${isActive ? 'text-orange-400' : 'text-gray-400'}`}
       onClick={onClick}
     >
       {icon}

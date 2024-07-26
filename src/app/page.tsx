@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <section className="flex justify-between bg-white px-32 bg-no-repeat bg-right w-full pt-12" style={{ backgroundImage: `url("/bg-pattern.svg")` }}>
+    <section className="flex justify-between bg-white px-32 bg-no-repeat bg-right w-full pt-12" style={{ backgroundImage: `url("/pattern.svg")` }}>
       <hgroup className="my-auto">
         <h1 className="text-7xl leading-tight font-bold uppercase">
           Venez lire vos <br />
