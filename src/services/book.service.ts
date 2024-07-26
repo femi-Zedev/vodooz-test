@@ -28,7 +28,7 @@ export const useGetBooks = createQuery({
     shelfId: string,
     offset?: number;
     limit?: number;
-  }): Promise<any> => {
+  }): Promise<string[]> => {
     const params = paramsBuilder({ offset, limit });
     return fetch(`${API}/shelves/${shelfId}/forms?${params}`).then(res =>  res.json())
   }

@@ -1,6 +1,7 @@
 export interface Book {
   id: string,
   short_title: string,
+  description: string;
   title: string,
   authors: Author[],
   image: string,

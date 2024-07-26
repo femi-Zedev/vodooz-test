@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Rubik } from 'next/font/google'
 import "./globals.css";
 import Navbar from "./_components/Navbar";
-import QueryProvider from "./providers/queryProvider";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import FilterProvider from "@/providers/bookProvider";
+import QueryProvider from "@/providers/queryProvider";
+import BookProvider from "@/providers/bookProvider";
 
 const rubik = Rubik({ subsets: ['latin'] })
 
@@ -24,7 +26,9 @@ export default function RootLayout({
         <QueryProvider>
           <main className={`${rubik.className} relative min-h-screen bg-[#F5F6F8] text-black`}>
             <Navbar />
-            {children}
+            <BookProvider>
+              {children}
+            </BookProvider>
           </main>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryProvider>
