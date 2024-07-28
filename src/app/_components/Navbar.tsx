@@ -7,7 +7,7 @@ import React from 'react'
 
 const navLinks = [
   { label: 'Acceuil', link: '/' },
-  { label: 'Explorer', link: '/etageres' }
+  { label: 'Les livres', link: '/etageres' }
 ]
 
 export default function Navbar() {

@@ -1,5 +1,5 @@
+import { Shelf } from '@/interfaces/shelf.interface';
 import { paramsBuilder } from '@/utils/params-builder';
-import { useQueries } from '@tanstack/react-query';
 import { createQuery } from 'react-query-kit'
 
 export const API = process.env.NEXT_PUBLIC_API_URI
@@ -12,7 +12,7 @@ export const useGetShelves = createQuery({
   }: {
     offset?: number;
     limit?: number;
-  }): Promise<any> => {
+  }): Promise<Shelf[]> => {
     const params = paramsBuilder({ offset, limit });
     return fetch(`${API}/users/5a8411b53ed02c04187ff02a/shelves?${params}`).then(res =>  res.json())
   }

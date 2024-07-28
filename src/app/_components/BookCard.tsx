@@ -3,7 +3,7 @@ import { DisplayMode } from '@/interfaces/global.interface'
 import Image from 'next/image'
 import React from 'react'
 export default function BookCard({ book, displayMode }: { book: Book, displayMode: DisplayMode }) {
-  const { authors, short_title, image, title } = book
+  const { authors, short_title, image, average_rating } = book
   return (
     <>
       {displayMode == 'grid' ?
@@ -41,9 +41,9 @@ export default function BookCard({ book, displayMode }: { book: Book, displayMod
                 </ul>
               ))}
             </span>}
+            {average_rating && <p>{average_rating} </p> }
           </hgroup>
         </article>
-
       }
     </>
 

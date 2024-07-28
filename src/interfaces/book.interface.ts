@@ -1,6 +1,7 @@
 export interface Book {
   id: string,
   short_title: string,
+  average_rating?: number,
   description: string;
   title: string,
   authors: Author[],

@@ -1,15 +1,16 @@
 'use client'
 
-import React, { PropsWithChildren, Suspense, useEffect } from 'react';
+import React, { PropsWithChildren, Suspense, useEffect, useMemo } from 'react';
 import IconButton from '@/components/ui/IconButton';
 import { BsFillGridFill } from 'react-icons/bs';
 import { FaList } from 'react-icons/fa';
 import { IoSearch } from 'react-icons/io5';
 import { DisplayMode } from '@/interfaces/global.interface';
 import { useGetShelves } from '@/services/book.service';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useBooks } from '@/providers/bookProvider';
+import { Shelf } from '@/interfaces/shelf.interface';
+
 
 
 
@@ -19,11 +20,10 @@ export default function EtagereLayout({ children }: PropsWithChildren) {
 
   const router = useRouter()
   const pathName = usePathname();
-  const pathPart = pathName.split('/');
-  const slug = pathPart[pathPart.length - 1];
+  const shelfSlug = useMemo(() => pathName.split('/').pop(), [pathName]);
 
 
-  const { data: shelves, isLoading } = useGetShelves({
+  const { data: shelves, isLoading, error } = useGetShelves({
     variables: {
       offset: 0,
       limit: 10,
@@ -31,21 +31,30 @@ export default function EtagereLayout({ children }: PropsWithChildren) {
   });
 
   useEffect(() => {
-    if(shelves){
+    if (shelves && shelves.length > 0) {
       router.push(`/etageres/${shelves[0].slug}?id=${shelves[0].id}`)
     }
-  }, [shelves])
-  
+  }, [shelves, router])
+
 
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <p>Chargement...</p>;
+  }
+
+  if (error) {
+    return <p>Une erreur est survenue: {error.message}</p>;
   }
 
 
   const handleDisplayModeChange = (newDisplayMode: DisplayMode) => {
     setDisplayMode(newDisplayMode)
   };
+
+  const handleShelfClick = (shelf: Shelf) => {
+    setShelf(shelf);
+    router.push(`/etageres/${shelf.slug}?id=${shelf.id}`)
+  }
 
   return (
     <Suspense fallback={<p>Une erreur s&lsquo;est produite</p>}>
@@ -54,12 +63,13 @@ export default function EtagereLayout({ children }: PropsWithChildren) {
         <hgroup className='max-w-[15%] w-full'>
           <h2 className="body18-semi mb-3 ml-6 uppercase">Les étagères</h2>
           <ul className="flex flex-col gap-1 body16-regular text-gray-700">
-            {shelves && shelves.map((shelve: { id: string, slug: string, title: string }) => (
-              <li onClick={() => { setShelf(shelve); router.push(`/etageres/${shelve.slug}?id=${shelve.id}`)}}
-                key={shelve.id}
-                className={`ml-6 p-2 cursor-pointer ${slug == shelve.slug ? 'bg-orange-50 text-orange-400 border border-orange-100' : ''}`}
+            {shelves && shelves.map(({ id, slug, title }) => (
+              <li
+                key={id}
+                onClick={() => handleShelfClick({ id, slug, title })}
+                className={`ml-6 p-2 cursor-pointer ${shelfSlug == slug ? 'bg-orange-50 text-orange-400 border border-orange-100' : ''}`}
               >
-                {shelve.title}
+                {title}
               </li>
             ))}
           </ul>
@@ -74,14 +84,16 @@ export default function EtagereLayout({ children }: PropsWithChildren) {
                 <input onChange={(e) => setSearchQuery(e.target.value)} type="search" className='bg-transparent outline-none' />
               </span>
               <IconButton
+                ariaLabel='display books in list'
+                className={`hover:bg-orange-100/30 rounded-lg ${displayMode === 'list' ? 'text-orange-400' : 'text-gray-400'}`}
                 icon={<FaList />}
                 onClick={() => handleDisplayModeChange('list')}
-                isActive={displayMode === 'list'}
               />
               <IconButton
                 icon={<BsFillGridFill />}
+                className={`hover:bg-orange-100/30 rounded-lg ${displayMode === 'grid' ? 'text-orange-400' : 'text-gray-400'}`}
+                ariaLabel='display books in grid'
                 onClick={() => handleDisplayModeChange('grid')}
-                isActive={displayMode === 'grid'}
               />
             </hgroup>
           </div>

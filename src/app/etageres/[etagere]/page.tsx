@@ -54,6 +54,8 @@ function BookList({ bookIds, displayMode = 'grid', searchQuery }: { bookIds: str
 
   const books = booksDetailsQueries.map(query => query.data as Book);
 
+  console.log(books)
+
 
   const filterBooks = (query: string): Book[] => {
     return books.filter(book => {

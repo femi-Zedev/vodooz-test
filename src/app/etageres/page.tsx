@@ -12,16 +12,6 @@ export default function EtagerePage() {
   const { shelf } = useBooks()
 
 
-  // useEffect(() => {
-  //   if (shelf.slug && shelf.slug !== ''){
-  //     console.log(shelf)
-  //     router.push(`/etageres/${shelf.slug}`)
-  //   } else {
-  //     return
-  //   }
-  // }, [shelf.slug])
-
-
 
 
 
