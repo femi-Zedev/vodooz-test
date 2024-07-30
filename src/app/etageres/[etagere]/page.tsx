@@ -1,15 +1,16 @@
 "use client"
 import BookCard from '@/app/_components/BookCard';
+import PaginationUI from '@/app/_components/PaginationUI';
 import { Book } from '@/interfaces/book.interface';
 import { DisplayMode } from '@/interfaces/global.interface';
 import { useBooks } from '@/providers/bookProvider';
 import { API, useGetBooks } from '@/services/book.service';
 import { useQueries } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
-import React from 'react'
+import React, { useState } from 'react'
 
 
-export default function Page() {
+export default function LivresEtagere() {
   const searchParams = useSearchParams();
   const shelfId = searchParams.get('id')
   const { displayMode, searchQuery } = useBooks()
@@ -19,7 +20,7 @@ export default function Page() {
   const { data: bookIds, isLoading: idsLoading } = useGetBooks({ variables: { shelfId: shelfId as string } });
 
   if (idsLoading) {
-    return <div>Loading ...</div>
+    return <div>Chargement ...</div>
   }
 
 
@@ -33,7 +34,9 @@ export default function Page() {
 }
 
 
-function BookList({ bookIds, displayMode = 'grid', searchQuery }: { bookIds: string[], displayMode?: DisplayMode, searchQuery: string }) {
+function BookList({ bookIds, displayMode = DisplayMode.Grid, searchQuery }: { bookIds: string[], displayMode?: DisplayMode, searchQuery: string }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
 
   const booksDetailsQueries = useQueries(
     {
@@ -45,16 +48,12 @@ function BookList({ bookIds, displayMode = 'grid', searchQuery }: { bookIds: str
     }
   );
 
-  if (!bookIds) {
-    return <div>Une erreur s&lsquo;est produite</div>
-  }
+
   const isLoading = booksDetailsQueries.some(query => query.isLoading);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Chargement...</div>;
 
   const books = booksDetailsQueries.map(query => query.data as Book);
-
-  console.log(books)
 
 
   const filterBooks = (query: string): Book[] => {
@@ -70,12 +69,30 @@ function BookList({ bookIds, displayMode = 'grid', searchQuery }: { bookIds: str
   const filteredBooks = filterBooks(searchQuery);
 
 
+  const totalPages = Math.ceil(filteredBooks.length / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const currentBooks = filteredBooks.slice(startIndex, endIndex);
+
+
+
+
   return (
-    <div className={`${displayMode == 'grid' ? 'grid grid-cols-12 gap-y-10 gap-x-4' : 'flex flex-col gap-y-5'}  w-full`} >
-      {filteredBooks.map((book) => (
-        <BookCard displayMode={displayMode} key={book.id} book={book} />
-      ))}
-    </div>
+    <>
+      <div className={`${displayMode == 'grid' ? 'grid grid-cols-12 gap-y-10 gap-x-4' : 'flex flex-col gap-y-5'}  w-full`} >
+        {currentBooks.map((book) => (
+          <BookCard key={book.id} displayMode={displayMode} book={book} />
+        ))}
+      </div>
+      <PaginationUI
+        pageSize={pageSize}
+        currentPage={currentPage}
+        onPrevPage={() => setCurrentPage((curr) => Math.max(curr - 1, 1))}
+        onNextPage={() => setCurrentPage((curr) => Math.min(curr + 1, totalPages))}
+        dataCount={filteredBooks.length}
+      />
+    </>
+
   )
 }
 

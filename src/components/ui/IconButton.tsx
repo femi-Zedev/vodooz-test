@@ -5,14 +5,16 @@ interface IconButtonProps {
   onClick: () => void;
   className?: string;
   ariaLabel: string
+  disabled?: boolean
 }
 
-const IconButton = ({ icon, onClick, ariaLabel, className }: IconButtonProps) => {
+const IconButton = ({ icon, onClick, ariaLabel, className,disabled }: IconButtonProps) => {
   return (
     <button
       className={`${className} px-2.5 py-2`}
       aria-label={ariaLabel}
       onClick={onClick}
+      disabled={disabled}
     >
       {icon}
     </button>

@@ -17,7 +17,7 @@ const defaultBookProviderState: BookProviderProps = {
 	setSearchQuery: () => {},
 	shelf: { id: "", slug: ''},
 	setShelf: () => {},
-	displayMode: 'grid',
+	displayMode: DisplayMode.Grid,
 	setDisplayMode: () => {},
 };
 
@@ -27,7 +27,7 @@ export const useBooks = () => useContext(BookProviderContext);
 
 export default function BookProvider({ children }: PropsWithChildren) {
 	const [searchQuery, setSearchQuery] = useState('');
-	const [displayMode, setDisplayMode] = useState<DisplayMode>('grid');
+	const [displayMode, setDisplayMode] = useState<DisplayMode>(DisplayMode.Grid);
 	const [shelf, setShelf] = useState<Shelf>({} as Shelf)
 
 	const contextValue = useMemo<BookProviderProps>(() => {

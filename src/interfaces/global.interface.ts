@@ -1,1 +1,4 @@
-export type DisplayMode = 'grid' | 'list'
+export enum DisplayMode {
+  Grid = 'grid',
+  List = 'list'
+}

@@ -13,7 +13,7 @@ const MockIcon = () => (
 
 describe('IconButton component', () => {
   it('should render an icon when the icon prop is provided', () => {
-    render(<IconButton icon={<MockIcon />} onClick={() => {}} />);
+    render(<IconButton ariaLabel='' icon={<MockIcon />} onClick={() => {}} />);
 
     const iconElement = screen.getByTestId('mock-icon');
     expect(iconElement).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe('IconButton component', () => {
 
   it('should call the onClick function when clicked', () => {
     const handleClick = jest.fn();
-    render(<IconButton icon={<MockIcon />} onClick={handleClick} />);
+    render(<IconButton ariaLabel='' icon={<MockIcon />} onClick={handleClick} />);
 
     const buttonElement = screen.getByRole('button');
     fireEvent.click(buttonElement);
