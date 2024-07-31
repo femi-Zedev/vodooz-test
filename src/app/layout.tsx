@@ -1,3 +1,5 @@
+'use client'
+
 import type { Metadata } from "next";
 import { Rubik } from 'next/font/google'
 import "./globals.css";
@@ -11,10 +13,10 @@ import { useEffect } from "react";
 const rubik = Rubik({ subsets: ['latin'] })
 
 
-export const metadata: Metadata = {
-  title: "Bookish",
-  description: "Find your favorite book and read it here for free",
-};
+// export const metadata: Metadata = {
+//   title: "Bookish",
+//   description: "Find your favorite book and read it here for free",
+// };
 
 export default function RootLayout({
   children,
